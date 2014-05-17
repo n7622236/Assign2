@@ -23,14 +23,16 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import assign2.ngram.NGramException;
+import assign2.ngram.NGramStore;
+
 /**
  * @author hogan
  *
  */
 @SuppressWarnings("serial")
 public class BarChart extends JFrame {
-	
-	public BarChart(String applicationTitle, String chartTitle) {
+	public BarChart(String applicationTitle, String chartTitle) throws NGramException {
         super(applicationTitle);
         // This will create the dataset 
         CategoryDataset dataset = createDataset();
@@ -46,18 +48,21 @@ public class BarChart extends JFrame {
 	
 	 /**
      * Creates a sample dataset 
+	 * @throws NGramException 
      */
-    private  DefaultCategoryDataset createDataset() {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(0.13605904897333534, "be or not to", "be");
-        dataset.setValue(0.06656263408951493, "be or not to", "mention");
-        dataset.setValue(0.032759119479403784, "be or not to", "exceed");
-        dataset.setValue(0.028824381687144844, "be or not to", "say");
-        dataset.setValue(0.02452364382944196, "be or not to", "the"); 
-        dataset.setValue(0.13605904897333534, "singin in the", "rain");
-        dataset.setValue(0.06656263408951493, "singin in the", "shower");
-        dataset.setValue(0.06656263408951493, "I'm", "hung");
-        return dataset;
+    private  DefaultCategoryDataset createDataset() throws NGramException {
+    	String context="My hovercraft is";
+    	NGramStore ngn=new NGramStore();
+    	if(ngn.getNGramsFromService(context, 5)){
+    		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        	String[] predictions=ngn.getNGram(context).getPredictions();
+        	Double[] probabilities=ngn.getNGram(context).getProbabilities();
+        	for(int i=0; i < predictions.length;i++){
+        	dataset.setValue(probabilities[i], context, predictions[i]);
+        	}
+        	return dataset;
+    	}else
+    		return null;	
     }
     
     /**

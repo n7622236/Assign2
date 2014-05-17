@@ -12,6 +12,8 @@ package assign2.examples.jfreechart;
 
 import javax.swing.JFrame;
 
+import assign2.ngram.NGramException;
+
 /**
  * @author hogan
  *
@@ -20,10 +22,11 @@ public class ChartDemo {
 
 	/**
 	 * @param args
+	 * @throws NGramException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NGramException {
 		 BarChart bar = new BarChart("Chart Demo","5-grams");
-		 bar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 //bar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 bar.pack();
 		 bar.setVisible(true);
 	}

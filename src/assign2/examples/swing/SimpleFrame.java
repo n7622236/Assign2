@@ -16,13 +16,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import assign2.examples.jfreechart.BarChart;
@@ -41,6 +44,7 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 
 	private JPanel btmPanel;
 	private JPanel textPanel;
+	private JTextField textField;
 	private JTextArea textDisplay;
 
 	/**
@@ -65,13 +69,24 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());
     
-	    textDisplay = new JTextArea("This is a default text message");
+	    textDisplay = new JTextArea("TA");
+	    textDisplay.setBounds(25, 11, 300, 42);
 	    textDisplay.setEditable(true);
 	    
+	    JLabel NgramLabel = new JLabel("Text:");
+	    NgramLabel.setBounds(10, 11, 124, 42);
+		
+	    textField = new JTextField("This is a default text message");
+	    textField.setBounds(10, 52, 300, 170);
+		textField.setColumns(1);
+		
 	    textPanel = new JPanel(); 
 	    textPanel.setBackground(Color.LIGHT_GRAY);
-	    textPanel.setLayout(new BorderLayout());
-	    textPanel.add(textDisplay,BorderLayout.CENTER);
+	    //textPanel.setLayout(new BorderLayout());
+	    
+	    textPanel.add(textField);
+	    textPanel.add(textDisplay);
+	    textPanel.add(NgramLabel);
 	    
 	    this.getContentPane().add(textPanel,BorderLayout.CENTER);
 
@@ -82,15 +97,6 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 		
  	    JButton blueButton = new JButton("Commit");
 	    blueButton.setBackground(Color.WHITE);
-	    
-		 blueButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					 BarChart bar = new BarChart("Chart Demo","5-grams");
-					 //bar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					 bar.pack();
-					 bar.setVisible(true);
-				}
-			});
 	    blueButton.addActionListener(this);
 	    btmPanel.add(blueButton);
 
