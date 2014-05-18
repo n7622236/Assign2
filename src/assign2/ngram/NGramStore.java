@@ -97,7 +97,7 @@ public class NGramStore implements NGramMap {
 		List<String> listOfWords = tokenSet.getWords();
 		String[] words = new String[listOfWords.size()];
 		listOfWords.toArray(words);
-		if (listOfWords.size() == 0){
+		if (listOfWords.size() == 0 || context.isEmpty() || context == ""){
 			isAnyPredictions = false;
 		}else{
 			List<Double> logProbs = tokenSet.getProbabilities();

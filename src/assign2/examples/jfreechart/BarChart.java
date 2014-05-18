@@ -32,10 +32,10 @@ import assign2.ngram.NGramStore;
  */
 @SuppressWarnings("serial")
 public class BarChart extends JFrame {
-	public BarChart(String applicationTitle, String chartTitle) throws NGramException {
+	public BarChart(String applicationTitle, String chartTitle, String context) throws NGramException {
         super(applicationTitle);
         // This will create the dataset 
-        CategoryDataset dataset = createDataset();
+        CategoryDataset dataset = createDataset(context);
         // based on the dataset we create the chart
         JFreeChart chart = createChart(dataset, chartTitle);
         // we put the chart into a panel
@@ -50,8 +50,8 @@ public class BarChart extends JFrame {
      * Creates a sample dataset 
 	 * @throws NGramException 
      */
-    private  DefaultCategoryDataset createDataset() throws NGramException {
-    	String context="My hovercraft is";
+    private  DefaultCategoryDataset createDataset(String context) throws NGramException {
+    	//String context="be or not to";
     	NGramStore ngn=new NGramStore();
     	if(ngn.getNGramsFromService(context, 5)){
     		DefaultCategoryDataset dataset = new DefaultCategoryDataset();

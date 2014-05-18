@@ -25,7 +25,7 @@ public class ChartDemo {
 	 * @throws NGramException 
 	 */
 	public static void main(String[] args) throws NGramException {
-		 BarChart bar = new BarChart("Chart Demo","5-grams");
+		 BarChart bar = new BarChart("Chart Demo","5-grams","be or not to");
 		 //bar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 bar.pack();
 		 bar.setVisible(true);
