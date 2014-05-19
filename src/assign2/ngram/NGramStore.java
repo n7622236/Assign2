@@ -114,5 +114,36 @@ public class NGramStore implements NGramMap {
 		return isAnyPredictions;
 		
 	}
-
+	/**
+	 * 
+	 * Get phrase array by exminating the format
+	 * 
+	 * @param context - the context for the ngram search 
+	 * 
+	 * @return phrase array
+	 * @throws NGramException if there is invalid input
+	 */
+	public String[] parseInput(String context) throws NGramException { 
+		//check the format
+		
+		//if illegal, throw new NGramException
+		//if ok, cut it up based on the commas, return phrase array
+		String[] phrase=context.split(",");
+		String[] words;
+		
+		String regPattern="^[a-zA-Z0-9'¡¦]*$";
+		
+		for(int i = 0; i < phrase.length; i++){
+			words=phrase[i].split("\\s");
+			for(String x:words){
+				if(x.matches(regPattern)){
+					
+				}else{
+					throw new NGramException("invalid phrases");	
+				}
+			}
+		}	
+		return phrase;
+	}
+	 
 }

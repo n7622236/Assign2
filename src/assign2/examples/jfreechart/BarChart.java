@@ -32,6 +32,7 @@ import assign2.ngram.NGramStore;
  */
 @SuppressWarnings("serial")
 public class BarChart extends JFrame {
+	ChartPanel cp;
 	public BarChart(String applicationTitle, String chartTitle, String context) throws NGramException {
         super(applicationTitle);
         // This will create the dataset 
@@ -42,10 +43,13 @@ public class BarChart extends JFrame {
         ChartPanel chartPanel = new ChartPanel(chart);
         // default size
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        cp=chartPanel;
         // add it to our application
-        setContentPane(chartPanel);
+       // setContentPane(chartPanel);
     }
-	
+	public ChartPanel getCP(){
+		return cp;
+	}
 	 /**
      * Creates a sample dataset 
 	 * @throws NGramException 

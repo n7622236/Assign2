@@ -31,6 +31,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import assign2.examples.jfreechart.BarChart;
+import assign2.gui.ChartPanel;
 import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
 
@@ -66,7 +67,7 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 
 
 	// helper method to construct the GUI 
-	private void createGUI() {
+	private void createGUI() throws NGramException {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());
@@ -94,7 +95,10 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	    //textPanel.add(scroll,BorderLayout.CENTER);
 	    
 	    this.getContentPane().add(textPanel,BorderLayout.CENTER);
+	    
 
+	    
+	    
 	    btmPanel = new JPanel();
 	    btmPanel.setBackground(Color.LIGHT_GRAY);
         btmPanel.setLayout(new FlowLayout());
@@ -126,26 +130,28 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 			  context=this.textField.getText().trim();
 			  NGramStore ngn=new NGramStore();
 			  try {
-				if(ngn.getNGramsFromService(context, 5)){
-						this.textDisplay.setText(ngn.getNGram(context).toString());
-				  }else{
-					  this.textDisplay.setText("NGram Results for Query: be or not to \n"
-								+ "No ngram predictions were returned.\n"
-								+ "Please try another query");
-				}
+				  	String[] phrases=ngn.parseInput(context);
+					String str="";
+				  	for(int i=0; i < phrases.length;i++){
+						if(ngn.getNGramsFromService(phrases[i], 5)){
+							str+=ngn.getNGram(phrases[i]).toString()+"\n";
+						  }else{
+							  this.textDisplay.setText("NGram Results for Query: "+context+" \n"
+										+ "No ngram predictions were returned.\n"
+										+ "Please try another query");
+						}
+					}
+					this.textDisplay.setText(str);
 			} catch (NGramException e1) {
-				e1.printStackTrace();
+				this.textDisplay.setText(e1.toString());
 			}
 		  } else if (buttonString.equals("Diagram")) {
 			  	BarChart bar;
 				try {
 					context=this.textField.getText().trim();
-					bar = new BarChart("Chart Demo","5-grams",context);
-					bar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-					bar.pack();
-					bar.setVisible(true);
+				    ChartPanel chartPanel=new ChartPanel(context);
+					this.getContentPane().add(chartPanel.getCP(),BorderLayout.EAST);
 				} catch (NGramException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		  }else if (buttonString.equals("Clear")){
@@ -155,7 +161,12 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 
 	@Override
 	public void run() {
-		createGUI();
+		try {
+			createGUI();
+		} catch (NGramException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setMaximumSize(new Dimension(WIDTH,HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH,HEIGHT));
 		this.pack();

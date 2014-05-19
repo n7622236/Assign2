@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="//vmware-host/Shared Folders/Downloads/Release/SearchSuggestion/lib/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="//vmware-host/Shared Folders/Downloads/Release/SearchSuggestion/lib/json.jar"/>
 	<classpathentry kind="lib" path="//vmware-host/Shared Folders/Downloads/Release/SearchSuggestion/lib/microsoft-ngram-java.jar"/>
+	<classpathentry kind="lib" path="//vmware-host/Shared Folders/Downloads/ngram(inc. test)(1)/ngram/junit-4.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
