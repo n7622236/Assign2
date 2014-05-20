@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import assign2.examples.jfreechart.BarChart;
+import assign2.gui.BarChart;
 import assign2.gui.ChartPanel;
 import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
@@ -81,7 +81,7 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	    
 	    JLabel NgramLabel = new JLabel("Text:");
 		
-	    textField = new JTextField("Please enter a default text message here",20);
+	    textField = new JTextField("I'm a pig, so are you",20);
 		textField.setColumns(1);
 		//textField.setLayout(new FlowLayout());
 		
@@ -146,14 +146,29 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 				this.textDisplay.setText(e1.toString());
 			}
 		  } else if (buttonString.equals("Diagram")) {
-			  	BarChart bar;
-				try {
-					context=this.textField.getText().trim();
-				    ChartPanel chartPanel=new ChartPanel(context);
-					this.getContentPane().add(chartPanel.getCP(),BorderLayout.EAST);
-				} catch (NGramException e1) {
-					e1.printStackTrace();
-				}
+			  context=this.textField.getText().trim();
+			  NGramStore ngn=new NGramStore();
+		
+				  	String[] phrases;
+					try {
+						
+				  		BarChart barChart=new BarChart(context);
+						ChartPanel chartPanel=new ChartPanel(barChart.getJFreeChart());
+						this.getContentPane().add(chartPanel.getNGramChartPanel(), BorderLayout.EAST);	
+					
+					} catch (NGramException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+//			  	BarChart bar;
+//				try {
+//					context=this.textField.getText().trim();
+//				    ChartPanel chartPanel=new ChartPanel(context);
+//					this.getContentPane().add(chartPanel.getCP(),BorderLayout.EAST);
+//				} catch (NGramException e1) {
+//					e1.printStackTrace();
+//				}
+			  
 		  }else if (buttonString.equals("Clear")){
 			  
 		  }
