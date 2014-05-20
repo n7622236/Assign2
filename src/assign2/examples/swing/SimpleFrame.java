@@ -46,9 +46,14 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	public static final int HEIGHT = 600;
 
 	private JPanel btmPanel;
+	private JPanel topPanel;
 	private JPanel textPanel;
 	private JTextField textField;
 	private JTextArea textDisplay;
+	private ChartPanel chartPanel;
+	private JButton textButton;
+	private JButton diagramButton;
+	private NGramStore ngn;
 
 	/**
 	 * @param args
@@ -72,47 +77,52 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());
     
-	    textDisplay = new JTextArea("the result is displaied here",18,42);
+	    textDisplay = new JTextArea("the result is displaied here",28,50);
 	    textDisplay.setEditable(false);
 	    textDisplay.setBackground(Color.BLACK);
 	    textDisplay.setForeground(Color.GREEN);
 	    JScrollPane scroll= new JScrollPane(textDisplay);
 	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	    
-	    JLabel NgramLabel = new JLabel("Text:");
-		
-	    textField = new JTextField("I'm a pig, so are you",20);
+	    JLabel textLabel = new JLabel("Text : ");
+	    textField = new JTextField("I'm a pig, so are you");
 		textField.setColumns(1);
-		//textField.setLayout(new FlowLayout());
-		
-	    textPanel = new JPanel(); 
-	    textPanel.setBackground(Color.LIGHT_GRAY);
-	    textPanel.setLayout(new BorderLayout());
 	    
-	    textPanel.add(textField,BorderLayout.NORTH);
+	    topPanel = new JPanel(); 
+		topPanel.setBackground(Color.LIGHT_GRAY);
+		topPanel.setLayout(new BorderLayout());
+		textLabel.setLabelFor(textField);
+		topPanel.add(textLabel,BorderLayout.WEST);
+		topPanel.add(textField,BorderLayout.CENTER);
+		this.getContentPane().add(topPanel,BorderLayout.NORTH);
+		 
+		textPanel = new JPanel(); 
+	    textPanel.setBackground(Color.LIGHT_GRAY);
+	    textPanel.setLayout(new FlowLayout());
 	    textPanel.add(textDisplay,BorderLayout.CENTER);
 	    //textPanel.add(NgramLabel,BorderLayout.NORTH);
 	    //textPanel.add(scroll,BorderLayout.CENTER);
 	    
 	    this.getContentPane().add(textPanel,BorderLayout.CENTER);
-	    
-
-	    
-	    
 	    btmPanel = new JPanel();
 	    btmPanel.setBackground(Color.LIGHT_GRAY);
         btmPanel.setLayout(new FlowLayout());
 
-		
- 	    JButton blueButton = new JButton("Commit");
-	    blueButton.setBackground(Color.WHITE);
-	    blueButton.addActionListener(this);
-	    btmPanel.add(blueButton);
+        JButton commitButton = new JButton("Commit");
+        commitButton.setBackground(Color.WHITE);
+        commitButton.addActionListener(this);
+	    btmPanel.add(commitButton);
+        
+ 	    textButton = new JButton("Text");
+ 	    textButton.setBackground(Color.WHITE);
+ 	    textButton.addActionListener(this);
+	    textButton.setEnabled(false);
+ 	    btmPanel.add(textButton);
 
-	    JButton blackButton = new JButton("Diagram");
-	    blackButton.setBackground(Color.WHITE);
-	    blackButton.addActionListener(this);
-	    btmPanel.add(blackButton);
+	    diagramButton = new JButton("Diagram");
+	    diagramButton.setBackground(Color.WHITE);
+	    diagramButton.addActionListener(this);
+	    diagramButton.setEnabled(false);
+	    btmPanel.add(diagramButton);
 	    
 	    JButton clearButton = new JButton("Clear");
 	    clearButton.setBackground(Color.WHITE);
@@ -128,49 +138,43 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 		String context;
 		  if (buttonString.equals("Commit")) {
 			  context=this.textField.getText().trim();
-			  NGramStore ngn=new NGramStore();
+			  ngn=new NGramStore();
 			  try {
 				  	String[] phrases=ngn.parseInput(context);
 					String str="";
+					//assigns the result to text area
 				  	for(int i=0; i < phrases.length;i++){
 						if(ngn.getNGramsFromService(phrases[i], 5)){
 							str+=ngn.getNGram(phrases[i]).toString()+"\n";
 						  }else{
-							  this.textDisplay.setText("NGram Results for Query: "+context+" \n"
+							  this.textDisplay.setText("NGram Results for Query: "+phrases[i]+" \n"
 										+ "No ngram predictions were returned.\n"
 										+ "Please try another query");
 						}
 					}
-					this.textDisplay.setText(str);
-			} catch (NGramException e1) {
-				this.textDisplay.setText(e1.toString());
-			}
-		  } else if (buttonString.equals("Diagram")) {
-			  context=this.textField.getText().trim();
-			  NGramStore ngn=new NGramStore();
-		
-				  	String[] phrases;
-					try {
-						
-				  		BarChart barChart=new BarChart(context);
-						ChartPanel chartPanel=new ChartPanel(barChart.getJFreeChart());
-						this.getContentPane().add(chartPanel.getNGramChartPanel(), BorderLayout.EAST);	
+				  	//produce the bar chart
+				  	BarChart barChart=new BarChart(context);
+					chartPanel=new ChartPanel(barChart.getJFreeChart());
+					this.getContentPane().add(chartPanel, BorderLayout.CENTER);
 					
-					} catch (NGramException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-//			  	BarChart bar;
-//				try {
-//					context=this.textField.getText().trim();
-//				    ChartPanel chartPanel=new ChartPanel(context);
-//					this.getContentPane().add(chartPanel.getCP(),BorderLayout.EAST);
-//				} catch (NGramException e1) {
-//					e1.printStackTrace();
-//				}
-			  
-		  }else if (buttonString.equals("Clear")){
-			  
+					//displays the text first
+					textDisplay.setText(str);
+					textPanel.setVisible(true);
+					chartPanel.setVisible(false);	
+					//enable the buttons
+					textButton.setEnabled(true);
+					diagramButton.setEnabled(true);
+			 } catch (NGramException e1) {
+				this.textDisplay.setText(e1.toString());
+			 }
+		  }else if (buttonString.equals("Text")){
+			  chartPanel.setVisible(false);					
+			  textPanel.setVisible(true);	
+		  }else if (buttonString.equals("Diagram")) {
+			  chartPanel.setVisible(true);					
+			  textPanel.setVisible(false);			  
+		  }else if (buttonString.equals("Clear")) {
+					  
 		  }
 	}
 
@@ -187,4 +191,5 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 		this.pack();
 		this.setVisible(true);
 	}
+	
 }
