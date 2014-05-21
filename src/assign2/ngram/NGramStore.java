@@ -3,13 +3,10 @@
  */
 package assign2.ngram;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import assign2.examples.ngram.SimpleNGramGenerator;
 
 import com.microsoft.research.webngram.service.GenerationService;
 import com.microsoft.research.webngram.service.NgramServiceFactory;
@@ -116,7 +113,7 @@ public class NGramStore implements NGramMap {
 	}
 	/**
 	 * 
-	 * Get phrase array by exminating the format
+	 * Get array of phrase,cut it up based on the commas, return phrase array
 	 * 
 	 * @param context - the context for the ngram search 
 	 * 
@@ -124,26 +121,23 @@ public class NGramStore implements NGramMap {
 	 * @throws NGramException if there is invalid input
 	 */
 	public String[] parseInput(String context) throws NGramException { 
-		//check the format
 		
-		//if illegal, throw new NGramException
-		//if ok, cut it up based on the commas, return phrase array
-		String[] phrase=context.split(",");
-		String[] words;
-		
-		String regPattern="^[a-zA-Z0-9'¡¦]*$";
-		
-		for(int i = 0; i < phrase.length; i++){
-			words=phrase[i].split("\\s");
-			for(String x:words){
-				if(x.matches(regPattern)){
-					
-				}else{
-					throw new NGramException("invalid phrases");	
+		if(context == "" || context == null || context.isEmpty()){
+			throw new NGramException("please enter the context you would like to search");	
+		}else{
+			String[] phrase=context.split(",");
+			String[] words;
+			
+			String regPattern="^[a-zA-Z0-9'¡¦]*$";
+			
+			for(int i = 0; i < phrase.length; i++){
+				words=phrase[i].split("\\s");
+				for(String x:words){
+					if(!x.matches(regPattern))
+						throw new NGramException("invalid phrases");	
 				}
-			}
-		}	
-		return phrase;
+			}	
+			return phrase;
+		}
 	}
-	 
 }

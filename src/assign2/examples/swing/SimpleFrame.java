@@ -32,11 +32,12 @@ import javax.swing.SwingUtilities;
 
 import assign2.gui.BarChart;
 import assign2.gui.ChartPanel;
+import assign2.gui.ResultPanel;
 import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
 
 /**
- * @author hogan
+ * @author Chou,Shu-Hung
  *
  */
 public class SimpleFrame extends JFrame implements ActionListener, Runnable {
@@ -47,13 +48,14 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 
 	private JPanel btmPanel;
 	private JPanel topPanel;
-	private JPanel textPanel;
 	private JTextField textField;
 	private JTextArea textDisplay;
+	private ResultPanel resultPanel;
 	private ChartPanel chartPanel;
 	private JButton textButton;
 	private JButton diagramButton;
 	private NGramStore ngn;
+	private String context;
 
 	/**
 	 * @param args
@@ -75,16 +77,10 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	private void createGUI() throws NGramException {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    setLayout(new BorderLayout());
-    
-	    textDisplay = new JTextArea("the result is displaied here",28,50);
-	    textDisplay.setEditable(false);
-	    textDisplay.setBackground(Color.BLACK);
-	    textDisplay.setForeground(Color.GREEN);
-	    JScrollPane scroll= new JScrollPane(textDisplay);
-	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	    setLayout(new BorderLayout());   
+	    
 	    JLabel textLabel = new JLabel("Text : ");
-	    textField = new JTextField("I'm a pig, so are you");
+	    textField = new JTextField("");
 		textField.setColumns(1);
 	    
 	    topPanel = new JPanel(); 
@@ -95,14 +91,10 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 		topPanel.add(textField,BorderLayout.CENTER);
 		this.getContentPane().add(topPanel,BorderLayout.NORTH);
 		 
-		textPanel = new JPanel(); 
-	    textPanel.setBackground(Color.LIGHT_GRAY);
-	    textPanel.setLayout(new FlowLayout());
-	    textPanel.add(textDisplay,BorderLayout.CENTER);
-	    //textPanel.add(NgramLabel,BorderLayout.NORTH);
-	    //textPanel.add(scroll,BorderLayout.CENTER);
+	
+	    resultPanel = new ResultPanel();
+	    this.getContentPane().add(resultPanel, BorderLayout.CENTER);
 	    
-	    this.getContentPane().add(textPanel,BorderLayout.CENTER);
 	    btmPanel = new JPanel();
 	    btmPanel.setBackground(Color.LIGHT_GRAY);
         btmPanel.setLayout(new FlowLayout());
@@ -135,46 +127,57 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 	@Override
 	public void actionPerformed(ActionEvent e){
 		String buttonString = e.getActionCommand();
-		String context;
+		
 		  if (buttonString.equals("Commit")) {
 			  context=this.textField.getText().trim();
 			  ngn=new NGramStore();
 			  try {
 				  	String[] phrases=ngn.parseInput(context);
 					String str="";
+					
 					//assigns the result to text area
 				  	for(int i=0; i < phrases.length;i++){
 						if(ngn.getNGramsFromService(phrases[i], 5)){
 							str+=ngn.getNGram(phrases[i]).toString()+"\n";
 						  }else{
-							  this.textDisplay.setText("NGram Results for Query: "+phrases[i]+" \n"
+							  str="NGram Results for Query: "+phrases[i]+" \n"
 										+ "No ngram predictions were returned.\n"
-										+ "Please try another query");
+										+ "Please try another query";
 						}
 					}
+				  	// create ResultPanel for displaying results in text
+				  	resultPanel.setResult(str);
+				  
 				  	//produce the bar chart
 				  	BarChart barChart=new BarChart(context);
 					chartPanel=new ChartPanel(barChart.getJFreeChart());
 					this.getContentPane().add(chartPanel, BorderLayout.CENTER);
 					
 					//displays the text first
-					textDisplay.setText(str);
-					textPanel.setVisible(true);
-					chartPanel.setVisible(false);	
+					
+					resultPanel.setVisible(true);
+					chartPanel.setVisible(false);
+					
 					//enable the buttons
 					textButton.setEnabled(true);
 					diagramButton.setEnabled(true);
 			 } catch (NGramException e1) {
-				this.textDisplay.setText(e1.toString());
+				 	resultPanel.setResult(e1.toString());
 			 }
 		  }else if (buttonString.equals("Text")){
 			  chartPanel.setVisible(false);					
-			  textPanel.setVisible(true);	
+			  resultPanel.setVisible(true);	
 		  }else if (buttonString.equals("Diagram")) {
 			  chartPanel.setVisible(true);					
-			  textPanel.setVisible(false);			  
+			  resultPanel.setVisible(false);			  
 		  }else if (buttonString.equals("Clear")) {
-					  
+			  ngn.removeNGram(context);
+			  textField.setText("");
+			  resultPanel.setResult("");
+			  resultPanel.setVisible(true);
+			  chartPanel.setVisible(false);
+			  textButton.setEnabled(false);
+			  diagramButton.setEnabled(false);
 		  }
 	}
 
@@ -188,6 +191,7 @@ public class SimpleFrame extends JFrame implements ActionListener, Runnable {
 		}
 		this.setMaximumSize(new Dimension(WIDTH,HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH,HEIGHT));
+		this.setResizable(false);
 		this.pack();
 		this.setVisible(true);
 	}
