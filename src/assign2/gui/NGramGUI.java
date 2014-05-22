@@ -18,18 +18,23 @@ import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
 
 public class NGramGUI  extends JFrame implements ActionListener, Runnable{
-	private static final long serialVersionUID = -7031008862559936404L;
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 
 	private JPanel btmPanel;
 	private JPanel topPanel;
-	private JTextField textField;
-
+	
 	private ResultPanel resultPanel;
 	private ChartPanel chartPanel;
+	
+	private JTextField textField;
+	private JLabel textLabel;
+	
+	private JButton commitButton;
 	private JButton textButton;
 	private JButton diagramButton;
+	private JButton clearButton;
+	
 	private NGramStore ngn;
 	private String context;
 	
@@ -46,20 +51,21 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());   
-	    
-	    JLabel textLabel = new JLabel("Text : ");
+	    //set top panel
 	    textField = new JTextField("");
 		textField.setColumns(1);
+		
+		textLabel = new JLabel("Text : ");
+	    textLabel.setLabelFor(textField);
 	    
 	    topPanel = new JPanel(); 
 		topPanel.setBackground(Color.LIGHT_GRAY);
 		topPanel.setLayout(new BorderLayout());
-		textLabel.setLabelFor(textField);
+		
 		topPanel.add(textLabel,BorderLayout.WEST);
 		topPanel.add(textField,BorderLayout.CENTER);
 		this.getContentPane().add(topPanel,BorderLayout.NORTH);
-		 
-	
+
 	    resultPanel = new ResultPanel();
 	    this.getContentPane().add(resultPanel, BorderLayout.CENTER);
 	    
@@ -67,7 +73,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	    btmPanel.setBackground(Color.LIGHT_GRAY);
         btmPanel.setLayout(new FlowLayout());
 
-        JButton commitButton = new JButton("Commit");
+        commitButton = new JButton("Commit");
         commitButton.setBackground(Color.WHITE);
         commitButton.addActionListener(this);
 	    btmPanel.add(commitButton);
@@ -84,7 +90,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	    diagramButton.setEnabled(false);
 	    btmPanel.add(diagramButton);
 	    
-	    JButton clearButton = new JButton("Clear");
+	    clearButton = new JButton("Clear");
 	    clearButton.setBackground(Color.WHITE);
 	    clearButton.addActionListener(this);
 	    btmPanel.add(clearButton);
@@ -101,20 +107,19 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 			  ngn=new NGramStore();
 			  try {
 				  	String[] phrases=ngn.parseInput(context);
-					String str="";
-					
+					String strReSult="";
 					//assigns the result to text area
 				  	for(int i=0; i < phrases.length;i++){
 						if(ngn.getNGramsFromService(phrases[i], 5)){
-							str+=ngn.getNGram(phrases[i]).toString()+"\n";
+							  strReSult+=ngn.getNGram(phrases[i]).toString()+"\n";
 						  }else{
-							  str="NGram Results for Query: "+phrases[i]+" \n"
+							  strReSult+="NGram Results for Query: "+phrases[i].toString()+"\n"
 										+ "No ngram predictions were returned.\n"
-										+ "Please try another query";
+										+ "Please try another query.\n\n";
 						}
 					}
 				  	// create ResultPanel for displaying results in text
-				  	resultPanel.setResult(str);
+				  	resultPanel.setResult(strReSult);
 				  
 				  	//produce the bar chart
 				  	BarChart barChart=new BarChart(context);
