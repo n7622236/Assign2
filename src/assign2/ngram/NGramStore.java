@@ -50,8 +50,9 @@ public class NGramStore implements NGramMap {
 	 */
 	@Override
 	public void removeNGram(String context) {
-		if(map.containsKey(context))
-			map.put(context, null);
+		if(map.containsKey(context) && map.size() != 0 && context != null){
+			map.remove(context);
+		}
 	}
 
 	/**
@@ -94,7 +95,7 @@ public class NGramStore implements NGramMap {
 		List<String> listOfWords = tokenSet.getWords();
 		String[] words = new String[listOfWords.size()];
 		listOfWords.toArray(words);
-		if (listOfWords.size() == 0 || context.isEmpty() || context == ""){
+		if (listOfWords.size() == 0 || listOfWords.isEmpty() || context.isEmpty() || context == ""){
 			isAnyPredictions = false;
 		}else{
 			List<Double> logProbs = tokenSet.getProbabilities();
@@ -120,8 +121,7 @@ public class NGramStore implements NGramMap {
 	 * @return phrase array
 	 * @throws NGramException if there is invalid input
 	 */
-	public String[] parseInput(String context) throws NGramException { 
-		
+	public String[] parseInput(String context) throws NGramException { 	
 		if(context == "" || context == null || context.isEmpty()){
 			throw new NGramException("please enter the context you would like to search");	
 		}else{

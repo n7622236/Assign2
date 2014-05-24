@@ -18,6 +18,7 @@ import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
 
 public class NGramGUI  extends JFrame implements ActionListener, Runnable{
+	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 
@@ -33,9 +34,10 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	private JButton commitButton;
 	private JButton textButton;
 	private JButton diagramButton;
-	private JButton clearButton;
+	private JButton resetButton;
 	
 	private NGramStore ngn;
+	private BarChart barChart;
 	private String context;
 	
 	/**
@@ -45,7 +47,16 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		super(arg0);
 	}
 
-
+	public void reset(){  
+	      //sngn.removeNGram(context);
+		  textField.setText("");
+		  resultPanel.setResult("");
+		  chartPanel=null;
+		  resultPanel.setVisible(true);
+		  //chartPanel.setVisible(false);
+		  textButton.setEnabled(false);
+		  diagramButton.setEnabled(false);
+	}
 	// helper method to construct the GUI 
 	private void createGUI() throws NGramException {
 		setSize(WIDTH, HEIGHT);
@@ -90,10 +101,10 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	    diagramButton.setEnabled(false);
 	    btmPanel.add(diagramButton);
 	    
-	    clearButton = new JButton("Clear");
-	    clearButton.setBackground(Color.WHITE);
-	    clearButton.addActionListener(this);
-	    btmPanel.add(clearButton);
+	    resetButton = new JButton("Reset");
+	    resetButton.setBackground(Color.WHITE);
+	    resetButton.addActionListener(this);
+	    btmPanel.add(resetButton);
 
 	    this.getContentPane().add(btmPanel, BorderLayout.SOUTH);	
 	}
@@ -101,7 +112,6 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	@Override
 	public void actionPerformed(ActionEvent e){
 		String buttonString = e.getActionCommand();
-		
 		  if (buttonString.equals("Commit")) {
 			  context=this.textField.getText().trim();
 			  ngn=new NGramStore();
@@ -122,12 +132,26 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 				  	resultPanel.setResult(strReSult);
 				  
 				  	//produce the bar chart
-				  	BarChart barChart=new BarChart(context);
-					chartPanel=new ChartPanel(barChart.getJFreeChart());
-					this.getContentPane().add(chartPanel, BorderLayout.CENTER);
+				  	barChart=new BarChart(context);
+				  	if(this.chartPanel != null){
+				  		chartPanel.removeAll();
+				  		chartPanel.revalidate();
+				  		chartPanel.setChart(barChart.getJFreeChart());
+//				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
+				  		this.getContentPane().setLayout(new BorderLayout()); 
+						this.getContentPane().add(chartPanel, BorderLayout.CENTER);
+						this.getContentPane().repaint();
+				  	}else{
+				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
+						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+						
+						this.getContentPane().setLayout(new BorderLayout()); 
+						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
+						this.getContentPane().repaint();
+				  	}
+				  	
 					
 					//displays the text first
-					
 					resultPanel.setVisible(true);
 					chartPanel.setVisible(false);
 					
@@ -143,17 +167,12 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		  }else if (buttonString.equals("Diagram")) {
 			  chartPanel.setVisible(true);					
 			  resultPanel.setVisible(false);			  
-		  }else if (buttonString.equals("Clear")) {
-			  ngn.removeNGram(context);
-			  textField.setText("");
-			  resultPanel.setResult("");
-			  resultPanel.setVisible(true);
-			  chartPanel.setVisible(false);
-			  textButton.setEnabled(false);
-			  diagramButton.setEnabled(false);
+		  }else if (buttonString.equals("Reset")) {
+			  reset();
 		  }
+		 
 	}
-
+	
 	@Override
 	public void run() {
 		try {
@@ -164,7 +183,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		}
 		this.setMaximumSize(new Dimension(WIDTH,HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH,HEIGHT));
-		this.setResizable(false);
+		//this.setResizable(false);
 		this.pack();
 		this.setVisible(true);
 	}

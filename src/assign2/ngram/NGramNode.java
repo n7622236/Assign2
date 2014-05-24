@@ -186,11 +186,11 @@ public class NGramNode implements NGramContainer {
 	 */
 	@Override
 	public String toString(){
-		String str="NGram Results for Query:"+this.context+"\n\n";
+		String strResult="NGram Results for Query:"+this.context+"\n";
 		for(int i=0; i < this.predictions.length;i++){
-			str+=this.context+" | "+this.predictions[i]+" : "+ this.probabilities[i]+"\n";
+			strResult+=this.context+" | "+this.predictions[i]+" : "+ this.probabilities[i]+"\n";
 		}
-		return str;
+		return strResult;
 	}
 	
 	/**
