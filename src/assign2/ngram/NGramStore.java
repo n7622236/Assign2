@@ -5,8 +5,10 @@ package assign2.ngram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.microsoft.research.webngram.service.GenerationService;
 import com.microsoft.research.webngram.service.NgramServiceFactory;
@@ -112,7 +114,6 @@ public class NGramStore implements NGramMap {
 			isAnyPredictions = true;
 		}
 		return isAnyPredictions;
-		
 	}
 	/**
 	 * Get array of phrase,cut it up based on the commas, return phrase array
@@ -146,5 +147,28 @@ public class NGramStore implements NGramMap {
 			}	
 			return phrase;
 		}
+	}
+	
+	/**
+	 * formats the all textual result from each NGram 
+	 * 
+	 * @author Chou,Shu-Hung
+	 * @return String returns the specific format of result
+	 */
+	public String toString(){
+		String strResult="";
+		Set<String> set = map.keySet();
+		  
+	    for(Iterator<String> iter = set.iterator(); iter.hasNext();)
+		{
+		    String phrase = (String)iter.next();
+			NGramContainer nGramStore = map.get(phrase);
+			strResult+="NGram Results for Query: "+phrase+"\n\n";
+			strResult+=nGramStore.toString()+"\n";
+		}
+//		for(int i=0; i < this.predictions.length;i++){
+//			strResult+=this.context+" | "+this.predictions[i]+" : "+ this.probabilities[i]+"\n";
+//		}
+		return strResult;
 	}
 }

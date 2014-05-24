@@ -1,6 +1,3 @@
-/**
- * 
- */
 package assign2.ngram;
 
 import java.text.DecimalFormat;
@@ -194,17 +191,16 @@ public class NGramNode implements NGramContainer {
 	}
 	
 	/**
-	 * formats the result 
+	 * formats the textual result 
 	 * 
 	 * @author Chou,Shu-Hung
 	 * @return String returns the specific format of result
 	 */
 	@Override
 	public String toString(){
-		String strResult="NGram Results for Query:"+this.context+"\n";
-		for(int i=0; i < this.predictions.length;i++){
+		String strResult="";
+		for(int i=0; i < this.predictions.length;i++)
 			strResult+=this.context+" | "+this.predictions[i]+" : "+ this.probabilities[i]+"\n";
-		}
 		return strResult;
 	}
 	

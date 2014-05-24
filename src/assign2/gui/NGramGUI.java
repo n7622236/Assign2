@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
@@ -67,7 +69,26 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 
 	    textField = new JTextField("");
 		textField.setColumns(1);
-		
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e){
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			public void caution(){
+				
+			}
+		});
 		textLabel = new JLabel("Text : ");
 	    textLabel.setLabelFor(textField);
 	    
@@ -127,19 +148,22 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 			  nGramStore=new NGramStore();
 			  try {
 				  	String[] phrases=nGramStore.parseInput(context);
-					String strReSult="";
+					String strResult="";
+					String emtpyResult="";
 					//produce the result
 				  	for(int i=0; i < phrases.length;i++){
-						if(nGramStore.getNGramsFromService(phrases[i], 5)){
-							  strReSult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
-						  }else{
-							  strReSult+="NGram Results for Query: "+phrases[i].toString()+"\n"
-										+ "No ngram predictions were returned.\n"
+						if(!nGramStore.getNGramsFromService(phrases[i].trim(), 5)){
+							//strResult+=nGramStore.toString(phrases[i].trim());
+//							  strResult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
+					//	}else{
+							emtpyResult+= strResult="NGram Results for Query: "+phrases[i]+"\n\n"
+										+"No ngram predictions were returned.\n"
 										+ "Please try another query.\n\n";
 						}
 					}
+				  	strResult=nGramStore.toString()+emtpyResult;
 				  	// create ResultPanel for displaying results in text
-				  	resultPanel.setResult(strReSult);
+				  	resultPanel.setResult(strResult);
 				  
 				  	//produce the bar chart
 				  	barChart=new BarChart(context,nGramStore);
@@ -181,7 +205,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public void reset(){  
-		  nGramStore.removeNGram(context);
+		  //nGramStore.removeNGram(context);
 		  textField.setText("");
 		  resultPanel.setResult("");
 		  chartPanel=null;
