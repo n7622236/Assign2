@@ -13,8 +13,9 @@ import com.microsoft.research.webngram.service.NgramServiceFactory;
 import com.microsoft.research.webngram.service.GenerationService.TokenSet;
 
 /**
- * @author Chou,Shu-Hung
- *
+ * supports a collection of ngrams, each held in an object of type NGramContainer
+ * 
+ * @author Chou,Shu-Hung(n7622236), Weiwei Nong(n8742600)
  */
 public class NGramStore implements NGramMap {
 	public static final String Key = "068cc746-31ff-4e41-ae83-a2d3712d3e68"; 
@@ -22,21 +23,20 @@ public class NGramStore implements NGramMap {
 	private NGramNode nGramNode;
 	private boolean isAnyPredictions = false;
 	/**
-	 * 
 	 * Add an ngram to the Map. 
 	 * If the context does not exist in the Map, the entry is added.
 	 * If the context exists in the Map, then the associated ngram is updated (and thus overwritten). 
 	 * 
 	 * @param ngram - ngram to be added 
+	 * @author Weiwei Nong(n8742600)
 	 */
 	@Override 
 	public void addNGram(NGramContainer ngram) {
 		String nContext = ngram.getContext();
 		if(!map.containsKey(nContext))
 			map.put(nContext, ngram); 
-		else{
+		else
 			map.put(nContext, ngram);	
-		}
 	}
 
 	/**
@@ -47,6 +47,7 @@ public class NGramStore implements NGramMap {
 	 * If the context exists in the Map, then the associated ngram is removed. 
 	 * 
 	 * @param context - context string for ngram to be removed
+	 * @author Weiwei Nong(n8742600)
 	 */
 	@Override
 	public void removeNGram(String context) {
@@ -62,7 +63,7 @@ public class NGramStore implements NGramMap {
 	 * 
 	 * @param context
 	 * @return NGramContainer associated with the context or null 
-	 * @author Chou,Shu-Hung
+	 * @author Weiwei Nong(n8742600)
 	 */
 	@Override
 	public NGramContainer getNGram(String context) {
@@ -80,6 +81,7 @@ public class NGramStore implements NGramMap {
 	 * @return false and do not store the bare context if the service returns no predictions
 	 * @throws NGramException if the service fails to connect or if the NGramContainer cannot be 
 	 * created. 
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public boolean getNGramsFromService(String context, int maxResults)
@@ -113,17 +115,17 @@ public class NGramStore implements NGramMap {
 		
 	}
 	/**
-	 * 
 	 * Get array of phrase,cut it up based on the commas, return phrase array
 	 * 
 	 * @param context - the context for the ngram search 
 	 * 
 	 * @return phrase array
 	 * @throws NGramException if there is invalid input
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public String[] parseInput(String context) throws NGramException { 	
 		if(context == "" || context == null || context.isEmpty()){
-			throw new NGramException("please enter the context you would like to search");	
+			throw new NGramException("Please enter the context you would like to search");	
 		}else{
 			String[] phrase=context.split(",");
 			String[] words;
@@ -134,7 +136,12 @@ public class NGramStore implements NGramMap {
 				words=phrase[i].split("\\s");
 				for(String x:words){
 					if(!x.matches(regPattern))
-						throw new NGramException("invalid phrases");	
+						throw new NGramException("Invalid phrases\n\n"
+								+"ONLY ALLOW TO HAVE\n"
+								+"@Upper and lower case alphabetic characters\n"
+								+"@Numerics:0123456789\n"
+								+"@Single quotes: ¡¥ BUT not ¡§ or `\n"
+								+"@Commas: , as the phrase separator only.");	
 				}
 			}	
 			return phrase;

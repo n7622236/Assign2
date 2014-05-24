@@ -11,12 +11,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import assign2.ngram.NGramException;
 import assign2.ngram.NGramStore;
-
+/**
+ * Creates GUI in order to implement Research Suggestion program
+ * 
+ * @author Chou,Shu-Hung(n7622236), Weiwei Nong(n8742600)
+ */
 public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 600;
@@ -36,33 +41,30 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	private JButton diagramButton;
 	private JButton resetButton;
 	
-	private NGramStore ngn;
+	private NGramStore nGramStore;
 	private BarChart barChart;
 	private String context;
 	
 	/**
-	 * @param arg0 - the Frame Title
+	 * Constructor
+	 * 
+	 * @param frameTitle - the Frame Title
 	 */
-	public NGramGUI(String arg0) throws HeadlessException {
-		super(arg0);
+	public NGramGUI(String frameTitle) throws HeadlessException {
+		super(frameTitle);
 	}
-
-	public void reset(){  
-	      //sngn.removeNGram(context);
-		  textField.setText("");
-		  resultPanel.setResult("");
-		  chartPanel=null;
-		  resultPanel.setVisible(true);
-		  //chartPanel.setVisible(false);
-		  textButton.setEnabled(false);
-		  diagramButton.setEnabled(false);
-	}
-	// helper method to construct the GUI 
+	/**
+	 * Hepler method to construct the GUI
+	 * offers a interface to query the suggestion and display result in two ways
+	 * displayed by literary and graphical
+	 * 
+	 * @author Chou,Shu-Hung(n7622236)
+	 */
 	private void createGUI() throws NGramException {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());   
-	    //set top panel
+
 	    textField = new JTextField("");
 		textField.setColumns(1);
 		
@@ -105,23 +107,31 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	    resetButton.setBackground(Color.WHITE);
 	    resetButton.addActionListener(this);
 	    btmPanel.add(resetButton);
-
 	    this.getContentPane().add(btmPanel, BorderLayout.SOUTH);	
 	}
-
+	/**
+	 * the listener for each button
+	 * press "Commit" when request a query 
+	 *        after display the query then two buttons(Text and Diagram) can be used 
+	 * press "Text" the result is shown by text
+	 * press "Diagram" the result is illustrated by bar chart
+	 * press "Reset" GUI is reseted 
+	 * 
+	 * @author Chou,Shu-Hung(n7622236)
+	 */
 	@Override
-	public void actionPerformed(ActionEvent e){
-		String buttonString = e.getActionCommand();
+	public void actionPerformed(ActionEvent ae){
+		String buttonString = ae.getActionCommand();
 		  if (buttonString.equals("Commit")) {
 			  context=this.textField.getText().trim();
-			  ngn=new NGramStore();
+			  nGramStore=new NGramStore();
 			  try {
-				  	String[] phrases=ngn.parseInput(context);
+				  	String[] phrases=nGramStore.parseInput(context);
 					String strReSult="";
-					//assigns the result to text area
+					//produce the result
 				  	for(int i=0; i < phrases.length;i++){
-						if(ngn.getNGramsFromService(phrases[i], 5)){
-							  strReSult+=ngn.getNGram(phrases[i]).toString()+"\n";
+						if(nGramStore.getNGramsFromService(phrases[i], 5)){
+							  strReSult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
 						  }else{
 							  strReSult+="NGram Results for Query: "+phrases[i].toString()+"\n"
 										+ "No ngram predictions were returned.\n"
@@ -132,34 +142,28 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 				  	resultPanel.setResult(strReSult);
 				  
 				  	//produce the bar chart
-				  	barChart=new BarChart(context);
+				  	barChart=new BarChart(context,nGramStore);
 				  	if(this.chartPanel != null){
 				  		chartPanel.removeAll();
 				  		chartPanel.revalidate();
 				  		chartPanel.setChart(barChart.getJFreeChart());
-//				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
-				  		this.getContentPane().setLayout(new BorderLayout()); 
 						this.getContentPane().add(chartPanel, BorderLayout.CENTER);
 						this.getContentPane().repaint();
 				  	}else{
 				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
-						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-						
-						this.getContentPane().setLayout(new BorderLayout()); 
+						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270)); 
 						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
 						this.getContentPane().repaint();
 				  	}
 				  	
-					
 					//displays the text first
 					resultPanel.setVisible(true);
 					chartPanel.setVisible(false);
-					
 					//enable the buttons
 					textButton.setEnabled(true);
 					diagramButton.setEnabled(true);
-			 } catch (NGramException e1) {
-				 	resultPanel.setResult(e1.toString());
+			 } catch (NGramException ne) {
+				 	resultPanel.setResult(ne.getMessage());
 			 }
 		  }else if (buttonString.equals("Text")){
 			  chartPanel.setVisible(false);					
@@ -169,23 +173,39 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 			  resultPanel.setVisible(false);			  
 		  }else if (buttonString.equals("Reset")) {
 			  reset();
-		  }
-		 
+		  }	 
 	}
-	
+	/**
+	 * initialize the GUI
+	 * 
+	 * @author Chou,Shu-Hung(n7622236)
+	 */
+	public void reset(){  
+		  nGramStore.removeNGram(context);
+		  textField.setText("");
+		  resultPanel.setResult("");
+		  chartPanel=null;
+		  resultPanel.setVisible(true);
+		  textButton.setEnabled(false);
+		  diagramButton.setEnabled(false);
+	}
+	/**
+	 * setup the GUI
+	 * 
+	 *@author Chou, Shu-Hung 
+	 */
 	@Override
 	public void run() {
 		try {
 			createGUI();
-		} catch (NGramException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NGramException ne) {
+			JOptionPane.showConfirmDialog(this,resultPanel,
+					ne.getMessage(),
+					JOptionPane.OK_CANCEL_OPTION);
 		}
 		this.setMaximumSize(new Dimension(WIDTH,HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH,HEIGHT));
-		//this.setResizable(false);
 		this.pack();
 		this.setVisible(true);
 	}
-	
 }

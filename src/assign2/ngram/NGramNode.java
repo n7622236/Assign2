@@ -7,8 +7,11 @@ import java.text.DecimalFormat;
 
 
 /**
- * @author Chou,Shu-Hung
- *
+ * The NGramContainer interface specifies a container to hold ngram results
+ * holding the context phrase, a list of predicted words, and a corresponding list of probabilities 
+ * implement interface assign2.ngram.NGramContainer.java
+ * 
+ * @author Chou,Shu-Hung(n7622236)
  */
 public class NGramNode implements NGramContainer {
 	private String[] words;
@@ -18,8 +21,7 @@ public class NGramNode implements NGramContainer {
 	
     /**
      * Constructor 1
-     * 
-     * @author Chou,Shu-Hung
+     * initialize NGramNode
      * 
      * @param words - array of words in order that make up the context
      * @param predictions - array of next words in the phrase as predicted by the model
@@ -29,6 +31,8 @@ public class NGramNode implements NGramContainer {
      * @exception NGramException - if predictions is null or empty or contains at least one empty or null string
      * @exception NGramException - if probabilities is null or contains at least one entry which is null , zero, negative or greater than 1.0
 	 * @exception NGramException - if predictions.length is different from probabilities.length
+	 * 
+	 * @author Chou,Shu-Hung
     */
 	public NGramNode(String[] words, String[] predictions, Double[] probabilities) throws NGramException{
 		if(isWordEmptyOrNull(words)){
@@ -49,8 +53,8 @@ public class NGramNode implements NGramContainer {
 	/**
 	 * 
 	 * Constructor 2
+	 * Initialize NGramNode
 	 * 
-	 * @author Chou,Shu-Hung
 	 * 
 	 * @param String context - string containing the context phrase
 	 * @param String[] predictions - array of next words in the phrase as predicted by the model
@@ -60,6 +64,8 @@ public class NGramNode implements NGramContainer {
      * @exception NGramException - if predictions is null or empty or contains at least one empty or null string
      * @exception NGramException - if probabilities is null or contains at least one entry which is null , zero, negative or greater than 1.0
 	 * @exception NGramException - if predictions.length is different from probabilities.length
+	 *
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public NGramNode(String context, String[] predictions, Double[] probabilities) throws NGramException{
 		if(isContextEmptyOrNull(context)){
@@ -90,6 +96,7 @@ public class NGramNode implements NGramContainer {
 	 * Simple getter method for the context string
 	 * 
 	 * @return String containing context phrase for predictions
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public String getContext() {
@@ -102,11 +109,12 @@ public class NGramNode implements NGramContainer {
 	 * 
 	 * @param context - single String containing context phrase for predictions
 	 * @throws NGramException if context is null or empty
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public void setContext(String context) throws NGramException {
 		if(isContextEmptyOrNull(context)) 
-			throw new NGramException("Invalid context");
+			throw new NGramException("Invalid context. Cannot be null or empty");
 		else
 			this.context = context;
 	}
@@ -117,11 +125,13 @@ public class NGramNode implements NGramContainer {
 	 * 
 	 * @param words - array of words in order that make up the context
 	 * @throws NGramException if words is null or empty or contains at least one empty or null string
+	 *
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public void setContext(String[] words) throws NGramException {
 		if(isWordEmptyOrNull(words))
-			throw new NGramException("Invalid words");
+			throw new NGramException("Invalid words. Cannot be null or empty");
 		else
 			this.words = words;
 	}
@@ -131,6 +141,8 @@ public class NGramNode implements NGramContainer {
 	 * Simple getter method for the prediction strings
 	 * 
 	 * @return array of alternative next words in the phrase as predicted by the model
+	 * 
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public String[] getPredictions() {
@@ -143,6 +155,7 @@ public class NGramNode implements NGramContainer {
 	 * 
 	 * @param predictions - next word in the phrase as predicted by the model
 	 * @throws NGramException if predictions is null or empty or contains at least one empty or null string
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public void setPredictions(String[] predictions) throws NGramException {
@@ -157,6 +170,7 @@ public class NGramNode implements NGramContainer {
 	 * Simple getter method for the probabilities
 	 * 
 	 * @return array of probabilities of context>prediction w.r.t. model
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public Double[] getProbabilities() {
@@ -169,6 +183,7 @@ public class NGramNode implements NGramContainer {
 	 * 
 	 * @param probabilities - array of probabilities of context>prediction w.r.t. model
 	 * @throws NGramException if probabilities null or contains at least one  entry which is null , zero, negative or greater than 1.0
+ 	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	@Override
 	public void setProbabilities(Double[] probabilities) throws NGramException {
@@ -194,12 +209,11 @@ public class NGramNode implements NGramContainer {
 	}
 	
 	/**
-	 * 
-	 * 
-	 * @author Chou,Shu-Hung
+	 * check whether array of words is empty or null
 	 *
 	 * @param String[] words
 	 * @return true - word is empty or null
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public boolean isWordEmptyOrNull(String[] words){
 		boolean isWordEmptyOrNull = false;
@@ -211,12 +225,11 @@ public class NGramNode implements NGramContainer {
 	}
 	
 	/**
+	 * check whether array of predictions is empty or null
 	 * 
-	 * 
-	 * @author Chou,Shu-Hung
-	 *
 	 * @param String[] predictions
 	 * @return true - prediction is empty or null
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public boolean isPredictionEmptyOrNull(String[] predictions){
 		boolean isPredictionEmptyOrNull = false;
@@ -228,12 +241,11 @@ public class NGramNode implements NGramContainer {
 	}
 	
 	/**
+	 * check whether array of probability is empty or null
 	 * 
-	 * 
-	 * @author Chou,Shu-Hung
-	 *
 	 * @param Double[] probabilities
 	 * @return true - probability is empty or null
+	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public boolean isProbabilityEmptyOrNull(Double[] probabilities){
 		boolean isProbablityEmptyOrNull = false;
@@ -245,12 +257,11 @@ public class NGramNode implements NGramContainer {
 	}
 	
 	/**
-	 * 
-	 * 
-	 * @author Chou,Shu-Hung
+	 * check whether context is empty or null
 	 *
 	 * @param String context
 	 * @return true - context is empty or null
+	 * @author Chou,Shu-Hung
 	 */
 	public boolean isContextEmptyOrNull(String context){
 		return (context == null || context == "");
