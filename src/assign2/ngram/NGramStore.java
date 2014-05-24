@@ -85,6 +85,7 @@ public class NGramStore implements NGramMap {
 	 * created. 
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
+	@SuppressWarnings("null")
 	@Override
 	public boolean getNGramsFromService(String context, int maxResults)
 			throws NGramException {
@@ -92,7 +93,9 @@ public class NGramStore implements NGramMap {
 		NgramServiceFactory factory = NgramServiceFactory.newInstance(NGramStore.Key);
 		if (factory==null) 
 			throw new NGramException("NGram Service unavailable");
-		
+		if(context ==null || context.isEmpty() || context == ""){
+			return false;
+		}
 		GenerationService service = factory.newGenerationService();
 		TokenSet tokenSet = service.generate(NGramStore.Key, "bing-body/2013-12/3", context, maxResults, null);
 		//converts type list to array
