@@ -166,7 +166,6 @@ public class NGramStore implements NGramMap {
 		{
 		    String phrase = (String)iter.next();
 			NGramContainer nGramStore = map.get(phrase);
-			strResult+="NGram Results for Query: "+phrase+"\n\n";
 			strResult+=nGramStore.toString()+"\n";
 		}
 //		for(int i=0; i < this.predictions.length;i++){

@@ -149,19 +149,17 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 			  try {
 				  	String[] phrases=nGramStore.parseInput(context);
 					String strResult="";
-					String emtpyResult="";
 					//produce the result
 				  	for(int i=0; i < phrases.length;i++){
-						if(!nGramStore.getNGramsFromService(phrases[i].trim(), 5)){
-							//strResult+=nGramStore.toString(phrases[i].trim());
-//							  strResult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
-					//	}else{
-							emtpyResult+= strResult="NGram Results for Query: "+phrases[i]+"\n\n"
+						strResult+="NGram Results for Query: "+phrases[i]+"\n\n";
+						if(nGramStore.getNGramsFromService(phrases[i].trim(), 5)){
+							  strResult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
+						}else{
+							  strResult+="NGram Results for Query: "+phrases[i]+"\n\n"
 										+"No ngram predictions were returned.\n"
 										+ "Please try another query.\n\n";
 						}
 					}
-				  	strResult=nGramStore.toString()+emtpyResult;
 				  	// create ResultPanel for displaying results in text
 				  	resultPanel.setResult(strResult);
 				  
