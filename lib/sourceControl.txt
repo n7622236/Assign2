@@ -1,0 +1,125 @@
+commit eb6905f30b30499e9f53007599373f9947f9e458
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sun May 25 23:27:56 2014 +1000
+
+    Complete the most parts of project.
+    Re-edit NGramNodeTest and NGramStoreTest
+    modify Barchart, NGramGUI and NGramStore due to find the bugs from junit
+    testing
+
+commit 24307031c4eb15fb66b71f86d69fcd91ba0d4daf
+Author: n8742600 <215919590@qq.com>
+Date:   Sun May 25 17:35:38 2014 +1000
+
+    re-edit the NGramNode and NGramStore
+
+commit 8dbd42ce9a23d2739d635074926a22fd73da49cd
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sun May 25 15:13:40 2014 +1000
+
+    push Barchar.java again
+
+commit 7c4b7f546b6d35951739e35a4a1e77acfc2f96d8
+Author: n8742600 <215919590@qq.com>
+Date:   Sun May 25 13:38:06 2014 +1000
+
+    setup the reset() method to disable the button of text and graphical
+    displays in order to prevent user to send a invalid input to the service
+
+commit 3d22345a275439c74f361120bef1725f461c86d5
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sun May 25 12:02:46 2014 +1000
+
+    correct the toString() method in NGramStore and modify the display text
+    in NGramGUI
+
+commit 360fa6386d9410535c9a2a2db8af2e022a1bf272
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sun May 25 01:47:07 2014 +1000
+
+    edit the bug in NGramStore.Error occurs when query "ABC,,DEF".
+    the blank did get throgh the checking method
+
+commit 0c5251ab22fb3463638673c3f9e5d3067777d7d0
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sun May 25 01:12:23 2014 +1000
+
+    modify the barchart bug and add the toString() method in NGramStore
+    class.also modify the NGramGUI and NGramNode due to the modification of
+    toString()
+
+commit 0b0e18858bed78a9e925c72fcea57f6c877ba88d
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sat May 24 20:34:57 2014 +1000
+
+    edit the javadoc and modify the bug in NGramGUI which is about the size
+    of text area
+
+commit 4ddb064eda7b9b220349525d03737e69bfd44aae
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sat May 24 13:56:28 2014 +1000
+
+    modify the bug of display the bar chat after query twice
+
+commit 3536a6662d5f8ac8b4cb9395b4502c08cd3fe601
+Author: n8742600 <215919590@qq.com>
+Date:   Thu May 22 20:00:33 2014 +1000
+
+    edited the bug of printing results from NGramStore
+
+commit 16020c8a049c4fcf5252a16780911770ade4eede
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Wed May 21 19:06:36 2014 +1000
+
+    Complete all the classes without GUI test
+
+commit 90338070d66b570358157d4f2dc182f830bb5eb9
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Tue May 20 23:52:30 2014 +1000
+
+    add the buttons for controlling the display screen and modify ChartPanel
+    and Barchart classes
+
+commit 1114fc0a8dda9f08eb102773090dd2128ebc6850
+Author: n8742600 <215919590@qq.com>
+Date:   Tue May 20 18:04:27 2014 +1000
+
+    modified the SimpleFrame and ChartPanel in order to fit up the GUI
+
+commit d1e03a83278ddc3c8fdeba6842c9a577d4fc6464
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Mon May 19 23:06:54 2014 +1000
+
+    fix up the parseInput function and the mutiple results can be displaied
+    on the textarea
+
+commit 3450a320e8e01c0eb22c95eeb71517b8b6ea6fe6
+Author: n8742600 <215919590@qq.com>
+Date:   Sun May 18 13:01:00 2014 +1000
+
+    testing Git
+
+commit fd5469b2028cb0d6623f847f7a478f09fd918e0b
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sat May 17 22:55:19 2014 +1000
+
+    adds package gui and finish the part of GUI
+
+commit 43792469be6e6fc9cc9e746491bdd0de82f6fc15
+Merge: a48c083 e700231
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sat May 17 12:52:20 2014 +1000
+
+    Merge branch 'master' of https://github.com/n7622236/Assign2.git
+
+commit a48c083e6b17b2508e181dfb31bfd461e82a151e
+Author: n7622236 <a12060111@hotmail.com>
+Date:   Sat May 17 12:39:30 2014 +1000
+
+    init repo
+
+commit e700231dbad55e2697efd8923d7c3df5e7679343
+Author: Hung <a12060111@hotmail.com>
+Date:   Fri May 16 19:45:23 2014 -0700
+
+    Initial commit
