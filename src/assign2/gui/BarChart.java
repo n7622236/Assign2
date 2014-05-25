@@ -22,14 +22,14 @@ public class BarChart {
 	 * Construct of BarChart
 	 * create a jFreeChart by sending the results
 	 * 
-	 * @param context - the search context
+	 * @param phrases - array of phrase context
 	 * @param nGramStore - the query result 
 	 * @throws NGramException if createDataset crashes
 	 * 
 	 * @author n8742600 Weiwei Nong
 	 */
-	public BarChart(String context,NGramStore nGramStore) throws NGramException {	
-		CategoryDataset dataset = createDataset(context,nGramStore);
+	public BarChart(String[] phrases,NGramStore nGramStore) throws NGramException {	
+		CategoryDataset dataset = createDataset(phrases,nGramStore);
         jFreeChart = createChart(dataset);
     }
 	
@@ -47,32 +47,30 @@ public class BarChart {
 	/**
      * Creates a sample dataset 
      * 
+     * @param phrases - array of phrase context
+     * @param nGramStore - a list of NGram
 	 * @throws NGramException - when creating dataset occurs errors
 	 * @author n8742600 Weiwei Nong
      */
-    private  DefaultCategoryDataset createDataset(String context,NGramStore nGramStore) throws NGramException {
-    	try{
-    		String[] phrases=nGramStore.parseInput(context);
-    		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    		String[] predictions;
-    		Double[] probabilities;
-    		for(int i=0; i < phrases.length;i++){
-    			if(nGramStore.getNGram(phrases[i]) != null){
-    				predictions=nGramStore.getNGram(phrases[i]).getPredictions();
-    				probabilities=nGramStore.getNGram(phrases[i]).getProbabilities();
-    				for(int resultNum=0; resultNum < predictions.length;resultNum++)
-    					dataset.setValue(probabilities[resultNum], phrases[i], predictions[resultNum]);
-    			}
-	  		}
-    		return dataset;
-    	}catch(NGramException ne){
-    		throw new NGramException("Error occurs when creat dataset");
-    	}  	
+    private  DefaultCategoryDataset createDataset(String[] phrases,NGramStore nGramStore) throws NGramException {
+    	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		String[] predictions;
+		Double[] probabilities;
+		for(int i=0; i < phrases.length;i++){
+			if(nGramStore.getNGram(phrases[i]) != null){
+				predictions=nGramStore.getNGram(phrases[i]).getPredictions();
+				probabilities=nGramStore.getNGram(phrases[i]).getProbabilities();
+				for(int resultNum=0; resultNum < predictions.length;resultNum++)
+					dataset.setValue(probabilities[resultNum], phrases[i], predictions[resultNum]);
+			}
+		}
+		return dataset;  	
     }
     
     /**
      * Creates a bar chart
      * 
+     * @param dataset - a number of Ngrams' data 
      * @author n8742600 Weiwei Nong
      */
     private JFreeChart createChart(CategoryDataset dataset) {

@@ -26,7 +26,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
-
+	
 	private JPanel btmPanel;
 	private JPanel topPanel;
 	
@@ -44,6 +44,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	private NGramStore nGramStore;
 	private BarChart barChart;
 	private String context;
+	private final int maxResults = 5;
 	
 	/**
 	 * Constructor
@@ -126,24 +127,25 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 			  context=this.textField.getText().trim();
 			  nGramStore=new NGramStore();
 			  try {
-				  	String[] phrases=nGramStore.parseInput(context);
+				  	String[] phrases=this.parseInput(context);
 					String strResult="";
 					//produce the result
 				  	for(int i=0; i < phrases.length;i++){
 						strResult+="NGram Results for Query: "+phrases[i]+"\n\n";
-						if(nGramStore.getNGramsFromService(phrases[i].trim(), 5)){
+						if(nGramStore.getNGramsFromService(phrases[i].trim(), maxResults)){
 							  strResult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
 						}else{
 							  strResult+="NGram Results for Query: "+phrases[i]+"\n\n"
 										+"No ngram predictions were returned.\n"
 										+ "Please try another query.\n\n";
 						}
-					}
+				  	}
+				  	
 				  	// create ResultPanel for displaying results in text
 				  	resultPanel.setResult(strResult);
 				  
 				  	//produce the bar chart
-				  	barChart=new BarChart(context,nGramStore);
+				  	barChart=new BarChart(phrases,nGramStore);
 				  	if(this.chartPanel != null){
 				  		chartPanel.removeAll();
 				  		chartPanel.revalidate();
@@ -165,6 +167,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 					diagramButton.setEnabled(true);
 			 } catch (NGramException ne) {
 				 	reset();
+				 	textField.setText(context);
 				 	resultPanel.setResult(ne.getMessage());
 			 }
 		  }else if (buttonString.equals("Text")){
@@ -178,12 +181,22 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		  }	 
 	}
 	/**
-	 * initialize the GUI
+	 * initialize the GUI and remove previous NGramstore
 	 * 
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public void reset(){  
-		  //nGramStore.removeNGram(context);
+		  String[] phrases;
+		  try{
+			phrases = this.parseInput(context);
+			if(phrases != null){
+				for(int i=0; i < phrases.length;i++)
+					nGramStore.removeNGram(phrases[i]);
+			}
+		  }catch (NGramException e) {
+			textField.setText(e.getMessage());
+		  }
+		
 		  textField.setText("");
 		  resultPanel.setResult("");
 		  chartPanel=null;
@@ -191,6 +204,41 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		  textButton.setEnabled(false);
 		  diagramButton.setEnabled(false);
 	}
+	
+	/**
+	 * Get array of phrase,cut it up based on the commas, return phrase array
+	 * 
+	 * @param context - the context for the ngram search 
+	 * 
+	 * @return phrase array
+	 * @throws NGramException if there is invalid input
+	 * @author Chou,Shu-Hung(n7622236)
+	 */
+	public String[] parseInput(String context) throws NGramException { 	
+		if(context == "" || context == null || context.isEmpty()){
+			throw new NGramException("Please enter the context you would like to search");	
+		}else{
+			String[] phrase=context.split(",");
+			String[] words;
+			
+			String regPattern="^[a-zA-Z0-9'¡¦]*$";
+			
+			for(int i = 0; i < phrase.length; i++){
+				words=phrase[i].split("\\s");
+				for(String x:words){
+					if(!x.matches(regPattern))
+						throw new NGramException("Invalid phrases\n\n"
+								+"ONLY ALLOW TO HAVE\n"
+								+"@Upper and lower case alphabetic characters\n"
+								+"@Numerics:0123456789\n"
+								+"@Single quotes: ¡¥ BUT not ¡§ or `\n"
+								+"@Commas: , as the phrase separator only.");	
+				}
+			}	
+			return phrase;
+		}
+	}
+
 	/**
 	 * setup the GUI
 	 * 

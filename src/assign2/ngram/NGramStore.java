@@ -42,8 +42,7 @@ public class NGramStore implements NGramMap {
 	}
 
 	/**
-	 * 
-	 * (Silently) Remove an ngram from the Map. 
+	 * Remove an ngram from the Map. 
 	 * If the context does not exist in the Map, the entry is not removed, but no status is returned. 
 	 * We guarantee that the entry no longer exists
 	 * If the context exists in the Map, then the associated ngram is removed. 
@@ -63,7 +62,7 @@ public class NGramStore implements NGramMap {
 	 * Find the NGram associated with the context if it exists in the Map. 
 	 * Return null if the context is not a key in the Map. 
 	 * 
-	 * @param context
+	 * @param contextstring for ngram to be got
 	 * @return NGramContainer associated with the context or null 
 	 * @author Weiwei Nong(n8742600)
 	 */
@@ -90,9 +89,11 @@ public class NGramStore implements NGramMap {
 			throws NGramException {
 		//initialize the NgramService
 		NgramServiceFactory factory = NgramServiceFactory.newInstance(NGramStore.Key);
-		if (factory==null) 
+		if (factory==null){
 			throw new NGramException("NGram Service unavailable");
-		if(context ==null || context.isEmpty() || context == ""){
+	    }else if(context ==null || context.isEmpty() || context == ""){
+			return false;
+		}else if(maxResults <= 0){
 			return false;
 		}
 		GenerationService service = factory.newGenerationService();
@@ -117,39 +118,6 @@ public class NGramStore implements NGramMap {
 		}
 		return isAnyPredictions;
 	}
-	/**
-	 * Get array of phrase,cut it up based on the commas, return phrase array
-	 * 
-	 * @param context - the context for the ngram search 
-	 * 
-	 * @return phrase array
-	 * @throws NGramException if there is invalid input
-	 * @author Chou,Shu-Hung(n7622236)
-	 */
-	public String[] parseInput(String context) throws NGramException { 	
-		if(context == "" || context == null || context.isEmpty()){
-			throw new NGramException("Please enter the context you would like to search");	
-		}else{
-			String[] phrase=context.split(",");
-			String[] words;
-			
-			String regPattern="^[a-zA-Z0-9'¡¦]*$";
-			
-			for(int i = 0; i < phrase.length; i++){
-				words=phrase[i].split("\\s");
-				for(String x:words){
-					if(!x.matches(regPattern))
-						throw new NGramException("Invalid phrases\n\n"
-								+"ONLY ALLOW TO HAVE\n"
-								+"@Upper and lower case alphabetic characters\n"
-								+"@Numerics:0123456789\n"
-								+"@Single quotes: ¡¥ BUT not ¡§ or `\n"
-								+"@Commas: , as the phrase separator only.");	
-				}
-			}	
-			return phrase;
-		}
-	}
 	
 	/**
 	 * formats the all textual result from each NGram 
@@ -161,12 +129,12 @@ public class NGramStore implements NGramMap {
 	public String toString(){
 		String strResult="";
 		Set<String> set = map.keySet();
-		  
+
 	    for(Iterator<String> iter = set.iterator(); iter.hasNext();)
 		{
 		    String phrase = (String)iter.next();
 			NGramContainer nGramStore = map.get(phrase);
-			strResult+=nGramStore.toString()+"\n";
+			strResult += nGramStore.toString()+"\n";
 		}
 		return strResult;
 	}

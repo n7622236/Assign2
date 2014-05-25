@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 /**
  * Junit test for NGramNode
  * 
@@ -379,6 +380,7 @@ public class NGramNodeTest {
 	 * if NGramException occurs, the test passes
 	 * 
 	 * @throws NGramException if probabilities null or contains at least one  entry which is null , zero, negative or greater than 1.0
+	 * @author Weiwei Nong(n8742600)
 	 */
 	@Test(expected = Exception.class) 
 	public void test_Method_SetProbabilities_With_InValid_Probabilities() throws NGramException {
@@ -387,27 +389,27 @@ public class NGramNodeTest {
 	}
 	
 	/**
-	 * 1.Set valid context,predictions,probabilities,judge the ouput of toString.
-	 * 2.set valid context,null predictions,null probabilitiesåcheck the ouput of toString.
+	 * test the format of result context
+	 * Construct a valid context, a list context of predictions and a list of probabilities 
+	 * if the result matches precisely the format, the test passes
+	 * 
 	 * @throws NGramException
+	 * @author Weiwei Nong(n8742600)
 	 */
 	@Test
-	public void testToString() throws NGramException {
-//		String context = "be or not to";
-//		nGramContainer.setContext(context);
-//		String result = nGramContainer.toString();
-//		Assert.assertEquals("be or not to | be : 0.136059\n"+
-//							"be or not to | mention : 0.066563\n"+
-//							"be or not to | exceed : 0.032759\n"+
-//							"be or not to | say : 0.028824\n"+
-//							"be or not to | the : 0.024524\n", result);
-//		
-//		String[] predictions = new String[]{};
-//		Double[] probabilities = new Double[]{};
-//		nGramContainer = new NGramNode(context, predictions, probabilities);
-//		result = nGramContainer.toString();
-//		Assert.assertEquals("NGram Results for Query:be or not to\n", result);
-//		
+	public void test_Method_ToString() throws NGramException {
+		String context = "be or not to";
+		String[] predictions = {"be", "mention", "exceed", "say", "the"};
+		Double[] probabilities = {0.13605912332,0.066563234345,0.03275912314,0.028823899932,0.0245242343};
+		nGramContainer = new NGramNode(context, predictions, probabilities);
+		
+		String correctFormatResult = "be or not to | be : 0.136059\n"+
+				"be or not to | mention : 0.066563\n"+
+				"be or not to | exceed : 0.032759\n"+
+				"be or not to | say : 0.028824\n"+
+				"be or not to | the : 0.024524\n";
+		String result = nGramContainer.toString();
+		Assert.assertEquals(correctFormatResult, result);
 	}
 	
 	/*
