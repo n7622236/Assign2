@@ -16,6 +16,9 @@ public class NGramNode implements NGramContainer {
 	private Double[] probabilities;
 	private String context;
 	
+	public NGramNode(){
+		
+	}
     /**
      * Constructor 1
      * initialize NGramNode
@@ -43,7 +46,7 @@ public class NGramNode implements NGramContainer {
 		}else{
 			this.words=words;
 			this.predictions=predictions;
-			this.probabilities=probabilities;	
+			this.probabilities=this.formatDoubleValue(probabilities);	
 		}
 	}
 	
@@ -74,17 +77,9 @@ public class NGramNode implements NGramContainer {
 		}else if(predictions.length != probabilities.length){
 			throw new NGramException("Predictions.length is different from probabilities.length");
 		}else{	
-			DecimalFormat df=new DecimalFormat(NGramContainer.DecFormat);
-			Double[] formatProb=new Double[probabilities.length];
-			int probIndex=0;
-			for(Double dfProb : probabilities){
-				formatProb[probIndex]=new Double(df.format(dfProb));
-				probIndex++;
-			}
-			
 			this.context = context;
 			this.predictions = predictions;
-			this.probabilities = formatProb;
+			this.probabilities = this.formatDoubleValue(probabilities);
 		}
 	}
 	
@@ -187,7 +182,7 @@ public class NGramNode implements NGramContainer {
 		if(isProbabilityEmptyOrNull(probabilities))
 			throw new NGramException("Invalid probabilities");
 		else
-			this.probabilities = probabilities;
+			this.probabilities = this.formatDoubleValue(probabilities);
 	}
 	
 	/**
@@ -261,5 +256,21 @@ public class NGramNode implements NGramContainer {
 	 */
 	public boolean isContextEmptyOrNull(String context){
 		return (context == null || context == "");
-	}	
+	}
+	/**
+	 * formats the Double value of probabilities
+	 * 
+	 * @param probabilities a list of probabilities
+	 * @author Chou,Shu-Hung(n7622236)
+	 */
+	public Double[] formatDoubleValue(Double[] probabilities){
+		DecimalFormat df=new DecimalFormat(NGramContainer.DecFormat);
+		Double[] formatProb=new Double[probabilities.length];
+		int probIndex=0;
+		for(Double dfProb : probabilities){
+			formatProb[probIndex]=new Double(df.format(dfProb));
+			probIndex++;
+		}
+		return formatProb;
+	}
 }
