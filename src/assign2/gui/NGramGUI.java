@@ -69,26 +69,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 
 	    textField = new JTextField("");
 		textField.setColumns(1);
-		textField.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent e){
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			public void caution(){
-				
-			}
-		});
+		
 		textLabel = new JLabel("Text : ");
 	    textLabel.setLabelFor(textField);
 	    
@@ -185,6 +166,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 					textButton.setEnabled(true);
 					diagramButton.setEnabled(true);
 			 } catch (NGramException ne) {
+				 	reset();
 				 	resultPanel.setResult(ne.getMessage());
 			 }
 		  }else if (buttonString.equals("Text")){
