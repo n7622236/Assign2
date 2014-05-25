@@ -20,7 +20,7 @@ import com.microsoft.research.webngram.service.GenerationService.TokenSet;
  * @author Chou,Shu-Hung(n7622236), Weiwei Nong(n8742600)
  */
 public class NGramStore implements NGramMap {
-	public static final String Key = "068cc746-31ff-4e41-ae83-a2d3712d3e68"; 
+	private static final String Key = "068cc746-31ff-4e41-ae83-a2d3712d3e68"; 
 	private Map<String,NGramContainer> map= new HashMap<String,NGramContainer>();
 	private NGramNode nGramNode;
 	private boolean isAnyPredictions = false;
@@ -85,7 +85,6 @@ public class NGramStore implements NGramMap {
 	 * created. 
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
-	@SuppressWarnings("null")
 	@Override
 	public boolean getNGramsFromService(String context, int maxResults)
 			throws NGramException {
@@ -158,6 +157,7 @@ public class NGramStore implements NGramMap {
 	 * @author Chou,Shu-Hung
 	 * @return String returns the specific format of result
 	 */
+	@Override
 	public String toString(){
 		String strResult="";
 		Set<String> set = map.keySet();

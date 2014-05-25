@@ -15,10 +15,7 @@ public class NGramNode implements NGramContainer {
 	private String[] predictions;
 	private Double[] probabilities;
 	private String context;
-	
-	public NGramNode(){
-		
-	}
+
     /**
      * Constructor 1
      * initialize NGramNode
@@ -39,7 +36,7 @@ public class NGramNode implements NGramContainer {
 			throw new NGramException("Words is null or empty");
 		}else if (isPredictionEmptyOrNull(predictions)){
 			throw new NGramException("Predictions is null or empty");
-		}else if (isProbabilityEmptyOrNull(probabilities)){
+		}else if (isVaildProbability(probabilities)){
 			throw new NGramException("Invalid probabilities");
 		}else if(predictions.length != probabilities.length){
 			throw new NGramException("Predictions.length is different from probabilities.length");
@@ -72,7 +69,7 @@ public class NGramNode implements NGramContainer {
 			throw new NGramException("Context is null or empty");
 		}else if (isPredictionEmptyOrNull(predictions)){
 			throw new NGramException("Predictions is null or empty");
-		}else if (isProbabilityEmptyOrNull(probabilities)){
+		}else if (isVaildProbability(probabilities)){
 			throw new NGramException("Invalid probabilities");
 		}else if(predictions.length != probabilities.length){
 			throw new NGramException("Predictions.length is different from probabilities.length");
@@ -124,8 +121,10 @@ public class NGramNode implements NGramContainer {
 	public void setContext(String[] words) throws NGramException {
 		if(isWordEmptyOrNull(words))
 			throw new NGramException("Invalid words. Cannot be null or empty");
-		else
+		else{
 			this.words = words;
+			this.context = this.words.toString();
+		}	
 	}
 
 	/**
@@ -179,7 +178,7 @@ public class NGramNode implements NGramContainer {
 	 */
 	@Override
 	public void setProbabilities(Double[] probabilities) throws NGramException {
-		if(isProbabilityEmptyOrNull(probabilities))
+		if(isVaildProbability(probabilities))
 			throw new NGramException("Invalid probabilities");
 		else
 			this.probabilities = this.formatDoubleValue(probabilities);
@@ -206,7 +205,7 @@ public class NGramNode implements NGramContainer {
 	 * @return true - word is empty or null
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
-	public boolean isWordEmptyOrNull(String[] words){
+	private boolean isWordEmptyOrNull(String[] words){
 		boolean isWordEmptyOrNull = false;
 		for(String word: words){
 			if(word == null || word == "")
@@ -222,7 +221,7 @@ public class NGramNode implements NGramContainer {
 	 * @return true - prediction is empty or null
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
-	public boolean isPredictionEmptyOrNull(String[] predictions){
+	private boolean isPredictionEmptyOrNull(String[] predictions){
 		boolean isPredictionEmptyOrNull = false;
 		for(String prediction: predictions){
 			if(prediction == null || prediction == "")
@@ -235,16 +234,17 @@ public class NGramNode implements NGramContainer {
 	 * check whether array of probability is empty or null
 	 * 
 	 * @param Double[] probabilities
-	 * @return true - probability is empty or null
+	 * @return true - probabilities is null or 
+	 * 			contains at least one entry which is null, zero, negative or greater than 1.0
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
-	public boolean isProbabilityEmptyOrNull(Double[] probabilities){
-		boolean isProbablityEmptyOrNull = false;
+	private boolean isVaildProbability(Double[] probabilities){
+		boolean isVaildProbability = false;
 		for(Double probability: probabilities){
-			if(probability == null || probability <= 0 || probability > 1)
-				isProbablityEmptyOrNull = true;
+			if(probability == null || probability <= 0.0 || probability > 1.0)
+				isVaildProbability = true;
 		}
-		return isProbablityEmptyOrNull;
+		return isVaildProbability;
 	}
 	
 	/**
@@ -254,7 +254,7 @@ public class NGramNode implements NGramContainer {
 	 * @return true - context is empty or null
 	 * @author Chou,Shu-Hung
 	 */
-	public boolean isContextEmptyOrNull(String context){
+	private boolean isContextEmptyOrNull(String context){
 		return (context == null || context == "");
 	}
 	/**
@@ -263,7 +263,7 @@ public class NGramNode implements NGramContainer {
 	 * @param probabilities a list of probabilities
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
-	public Double[] formatDoubleValue(Double[] probabilities){
+	private Double[] formatDoubleValue(Double[] probabilities){
 		DecimalFormat df=new DecimalFormat(NGramContainer.DecFormat);
 		Double[] formatProb=new Double[probabilities.length];
 		int probIndex=0;

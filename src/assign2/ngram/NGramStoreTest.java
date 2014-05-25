@@ -105,7 +105,7 @@ public class NGramStoreTest {
                     final int NumObjectClassFields = Array.getLength(Object.class.getFields());
                     final int NumInterfaceFields = Array.getLength(NGramMap.class.getFields());
                     final int NumNGramStoreClassFields = Array.getLength(NGramStore.class.getFields());
-                    assertTrue("obj + interface = class",(NumObjectClassFields+NumInterfaceFields)==NumNGramStoreClassFields);
+                    assertTrue("obj "+NumObjectClassFields+ "interface"+NumInterfaceFields+" = class"+NumNGramStoreClassFields,(NumObjectClassFields+NumInterfaceFields)==NumNGramStoreClassFields);
     }
    
     @Test
@@ -117,7 +117,4 @@ public class NGramStoreTest {
                     assertTrue("obj:"+NumObjectClassConstructors+":inter:"+NumInterfaceConstructors+" = class:"+NumNGramStoreClassConstructors,
                                                     (NumObjectClassConstructors+NumInterfaceConstructors)==NumNGramStoreClassConstructors);
     }
-
-   
-
 }
