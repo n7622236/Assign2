@@ -197,7 +197,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		  }
 		
 		  textField.setText("");
-		  resultPanel.setResult("");
+		  resultPanel.setGreet();;
 		  chartPanel=null;
 		  resultPanel.setVisible(true);
 		  textButton.setEnabled(false);
