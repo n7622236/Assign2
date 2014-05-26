@@ -20,7 +20,7 @@ import org.junit.rules.ExpectedException;
 public class NGramNodeTest {
 	
 	private NGramContainer nGramContainer;
-	
+	private NGramNode toTest;
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();	
      
@@ -452,10 +452,6 @@ public class NGramNodeTest {
 	@Test
     public void TOSTRING_ComplexObject() throws NGramException {
           DecimalFormat df = new DecimalFormat(NGramContainer.DecFormat);
-          String context="test";
-          String[] predictions = new String[]{};
-  		  Double[] probabilities = new Double[]{};
-          NGramNode toTest=new NGramNode(context,predictions,probabilities);
           String test = "be or not to | be : 0.136059\n" + "be or not to | mention : 0.066563\n" +
                         "be or not to | exceed : 0.032759\n" + "be or not to | say : 0.028824\n" +
                         "be or not to | the : 0.024524\n";
