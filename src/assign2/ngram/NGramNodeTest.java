@@ -34,8 +34,9 @@ public class NGramNodeTest {
 		String[] predictions = {"be", "mention", "exceed", "say", "the"};
 		Double[] probabilities = {0.136059, 0.066563, 0.032759, 0.028824, 0.024524};
 		nGramContainer = new NGramNode(context, predictions, probabilities);
+		toTest = new NGramNode(context, predictions, probabilities);
 	}
-	
+
 	/**
 	 * Test Constructor1 with Valid Arguments
 	 * 

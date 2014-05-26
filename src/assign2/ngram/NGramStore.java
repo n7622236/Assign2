@@ -91,11 +91,11 @@ public class NGramStore implements NGramMap {
 		NgramServiceFactory factory = NgramServiceFactory.newInstance(NGramStore.Key);
 		if (factory==null){
 			throw new NGramException("NGram Service unavailable");
-	    }else if(context ==null || context.isEmpty() || context == ""){
+	    }else if(context == null || context.isEmpty() || context.trim() == ""){
 			return false;
 		}else if(maxResults <= 0){
 			return false;
-		}
+		}else{
 		GenerationService service = factory.newGenerationService();
 		TokenSet tokenSet = service.generate(NGramStore.Key, "bing-body/2013-12/3", context, maxResults, null);
 		//converts type list to array
@@ -117,6 +117,7 @@ public class NGramStore implements NGramMap {
 			isAnyPredictions = true;
 		}
 		return isAnyPredictions;
+		}
 	}
 	
 	/**

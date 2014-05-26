@@ -124,7 +124,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	public void actionPerformed(ActionEvent ae){
 		String buttonString = ae.getActionCommand();
 		  if (buttonString.equals("Commit")) {
-			  context=this.textField.getText().trim();
+			  context=this.textField.getText();
 			  nGramStore=new NGramStore();
 			  try {
 				  	String[] phrases=this.parseInput(context);
@@ -140,7 +140,6 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 										+ "Please try another query.\n\n";
 						}
 				  	}
-				  	
 				  	// create ResultPanel for displaying results in text
 				  	resultPanel.setResult(strResult);
 				  
@@ -218,11 +217,13 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 		if(context == "" || context == null || context.isEmpty()){
 			throw new NGramException("Please enter the context you would like to search");	
 		}else{
-			String[] phrase=context.split(",");
 			String[] words;
-			
+			String[] phrase=context.split(",");
 			String regPattern="^[a-zA-Z0-9'¡¦]*$";
 			
+			if(phrase.length == 0){
+				throw new NGramException("Please enter the context you would like to search");	
+			}
 			for(int i = 0; i < phrase.length; i++){
 				words=phrase[i].split("\\s");
 				for(String x:words){
