@@ -1,0 +1,13 @@
+1. Group info.
+Student1: Shu-Hung Chou (n7622236)
+Student2: Wei-Wei Nong (n8742600)
+
+2. Contribution
+Both of us cooperate as two roles, coder or tester, we always switch the roles in order to specify the problems we might not notice. We believe that the result is better if we do so. It works really well for us. Before started doing the assignment, we still assigned work for ourselves. Shu-Hung Chou undertook the responsibility for mostly the coding and Wei-Wei Nong for mostly the testing including JUnit test and GUI test. During the period, we update our work to the Github and examine anything we might miss. However, this assignment 2 is completed and we are satisfied with it.
+
+3. Known bugs and incomplete features
+Bugs: So far, we have found none.
+Incomplete features: We think the application complete the features.
+4. Need to know
+(1) In order to do the unit test, we employed the external lib of Junit-4.8.1.jar.
+
