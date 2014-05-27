@@ -133,7 +133,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 				  	for(int i=0; i < phrases.length;i++){
 						strResult+="NGram Results for Query: "+phrases[i]+"\n\n";
 						if(nGramStore.getNGramsFromService(phrases[i].trim(), maxResults)){
-							  strResult+=nGramStore.getNGram(phrases[i]).toString()+"\n";
+							  strResult+=nGramStore.getNGram(phrases[i].trim()).toString()+"\n";
 						}else{
 							  strResult+="NGram Results for Query: "+phrases[i]+"\n\n"
 										+"No ngram predictions were returned.\n"

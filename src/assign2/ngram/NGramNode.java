@@ -268,7 +268,7 @@ public class NGramNode implements NGramContainer {
 		Double[] formatProb=new Double[probabilities.length];
 		int probIndex=0;
 		for(Double dfProb : probabilities){
-			formatProb[probIndex]=new Double(df.format(dfProb));
+			formatProb[probIndex]= new Double(df.format(dfProb));
 			probIndex++;
 		}
 		return formatProb;

@@ -97,7 +97,7 @@ public class NGramStore implements NGramMap {
 			return false;
 		}else{
 		GenerationService service = factory.newGenerationService();
-		TokenSet tokenSet = service.generate(NGramStore.Key, "bing-body/2013-12/3", context, maxResults, null);
+		TokenSet tokenSet = service.generate(NGramStore.Key, "bing-body/2013-12/5", context, maxResults, null);
 		//converts type list to array
 		List<String> listOfWords = tokenSet.getWords();
 		String[] words = new String[listOfWords.size()];
