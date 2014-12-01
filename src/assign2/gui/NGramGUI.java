@@ -124,6 +124,7 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	public void actionPerformed(ActionEvent ae){
 		String buttonString = ae.getActionCommand();
 		  if (buttonString.equals("Commit")) {
+			  
 			  context=this.textField.getText();
 			  nGramStore=new NGramStore();
 			  try {
@@ -145,17 +146,17 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 				  
 				  	//produce the bar chart
 				  	barChart=new BarChart(phrases,nGramStore);
-				  	if(this.chartPanel == null){
-				  		
-						chartPanel=new ChartPanel(barChart.getJFreeChart());
-						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270)); 
-						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
-						this.getContentPane().repaint();
-				  	}else{
+				  	if(this.chartPanel != null){
 				  		chartPanel.removeAll();
 				  		chartPanel.revalidate();
 				  		chartPanel.setChart(barChart.getJFreeChart());
 						this.getContentPane().add(chartPanel, BorderLayout.CENTER);
+						this.getContentPane().repaint();
+						
+				  	}else{
+				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
+						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270)); 
+						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
 						this.getContentPane().repaint();
 				  	}
 				  	
@@ -186,20 +187,8 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 	 * @author Chou,Shu-Hung(n7622236)
 	 */
 	public void reset(){  
-		  String[] phrases;
-		  try{
-			phrases = this.parseInput(context);
-			if(phrases != null){
-				for(int i=0; i < phrases.length;i++)
-					nGramStore.removeNGram(phrases[i]);
-			}
-		  }catch (NGramException e) {
-			textField.setText(e.getMessage());
-		  }
-		
 		  textField.setText("");
-		  resultPanel.setGreet();;
-		  chartPanel=null;
+		  resultPanel.setGreet(); 
 		  resultPanel.setVisible(true);
 		  textButton.setEnabled(false);
 		  diagramButton.setEnabled(false);
