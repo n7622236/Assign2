@@ -3,8 +3,6 @@ package assign2.ngram;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Array;
-import java.text.DecimalFormat;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -452,7 +450,6 @@ public class NGramNodeTest {
    
 	@Test
     public void TOSTRING_ComplexObject() throws NGramException {
-          DecimalFormat df = new DecimalFormat(NGramContainer.DecFormat);
           String test = "be or not to | be : 0.136059\n" + "be or not to | mention : 0.066563\n" +
                         "be or not to | exceed : 0.032759\n" + "be or not to | say : 0.028824\n" +
                         "be or not to | the : 0.024524\n";
