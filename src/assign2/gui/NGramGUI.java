@@ -145,16 +145,17 @@ public class NGramGUI  extends JFrame implements ActionListener, Runnable{
 				  
 				  	//produce the bar chart
 				  	barChart=new BarChart(phrases,nGramStore);
-				  	if(this.chartPanel != null){
+				  	if(this.chartPanel == null){
+				  		
+						chartPanel=new ChartPanel(barChart.getJFreeChart());
+						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270)); 
+						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
+						this.getContentPane().repaint();
+				  	}else{
 				  		chartPanel.removeAll();
 				  		chartPanel.revalidate();
 				  		chartPanel.setChart(barChart.getJFreeChart());
 						this.getContentPane().add(chartPanel, BorderLayout.CENTER);
-						this.getContentPane().repaint();
-				  	}else{
-				  		chartPanel=new ChartPanel(barChart.getJFreeChart());
-						chartPanel.setPreferredSize(new java.awt.Dimension(500, 270)); 
-						this.getContentPane().add(this.chartPanel, BorderLayout.CENTER);
 						this.getContentPane().repaint();
 				  	}
 				  	
